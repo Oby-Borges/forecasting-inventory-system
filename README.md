@@ -11,13 +11,15 @@ forecasting-inventory-system/
 ├── data/
 │   └── demand_data.csv
 ├── outputs/
+│   ├── forecast_plot.png
 │   ├── forecast_results.csv
 │   └── model_comparison.csv
 ├── src/
 │   ├── data_loader.py
 │   ├── evaluation.py
 │   ├── forecasting.py
-│   └── main.py
+│   ├── main.py
+│   └── visualization.py
 ├── README.md
 └── requirements.txt
 ```
@@ -45,6 +47,7 @@ The program will:
 - calculate evaluation metrics
 - print a summary table in the terminal
 - save detailed outputs into the `outputs/` folder
+- generate a forecast comparison plot and save it as `outputs/forecast_plot.png`
 
 ## Forecasting Methods
 ### 1. Naive Forecast
@@ -58,6 +61,9 @@ Uses the previous 3 demand values with weights `[0.5, 0.3, 0.2]`, where the most
 
 ### 4. Simple Exponential Smoothing
 Uses a smoothing factor of `alpha = 0.3` to update forecasts over time. Recent demand is included more heavily than older data, but older information still matters.
+
+## Forecast Visualization
+After the forecast results are generated, the program also creates a comparison line chart that shows the actual demand and all forecast methods on one figure. The chart is saved to `outputs/forecast_plot.png`, and it is also displayed when you run the script locally.
 
 ## Evaluation Metrics
 ### MAD (Mean Absolute Deviation)
@@ -86,6 +92,7 @@ Shows the average percentage error between actual and forecast values.
 - `src/data_loader.py`: Loads the CSV file and validates the input data.
 - `src/forecasting.py`: Contains the forecasting methods and adds forecast columns.
 - `src/evaluation.py`: Calculates MAD, MSE, RMSE, and MAPE for each method.
+- `src/visualization.py`: Builds the forecast comparison chart and saves it as a PNG image.
 - `data/demand_data.csv`: Example dataset so the project can run immediately.
 - `outputs/`: Stores generated result files after the program runs.
 - `requirements.txt`: Lists the Python packages required by the project.
