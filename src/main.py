@@ -7,6 +7,7 @@ import pandas as pd
 from data_loader import load_demand_data
 from evaluation import calculate_all_metrics
 from forecasting import add_forecasts
+from visualization import create_forecast_plot
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,6 +15,7 @@ DATA_FILE = BASE_DIR / "data" / "demand_data.csv"
 OUTPUTS_DIR = BASE_DIR / "outputs"
 FORECAST_RESULTS_FILE = OUTPUTS_DIR / "forecast_results.csv"
 MODEL_COMPARISON_FILE = OUTPUTS_DIR / "model_comparison.csv"
+PLOT_FILE = OUTPUTS_DIR / "forecast_plot.png"
 
 
 
@@ -49,6 +51,7 @@ def main() -> None:
         forecast_data = add_forecasts(demand_data)
         metrics = calculate_all_metrics(forecast_data)
         save_results(forecast_data, metrics)
+        create_forecast_plot(forecast_data, PLOT_FILE)
 
         print("\nForecasting and Inventory Decision Support System - Version 1")
         print("=" * 63)
@@ -60,6 +63,7 @@ def main() -> None:
         print("\nFiles saved successfully:")
         print(f"- {FORECAST_RESULTS_FILE}")
         print(f"- {MODEL_COMPARISON_FILE}")
+        print(f"- {PLOT_FILE}")
     except FileNotFoundError as error:
         print(f"Error: {error}")
     except ValueError as error:
