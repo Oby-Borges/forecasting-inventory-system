@@ -7,7 +7,11 @@ import pandas as pd
 from data_loader import load_demand_data
 from evaluation import calculate_all_metrics
 from forecasting import add_forecasts
-from inventory import calculate_inventory_summary, format_inventory_summary
+from inventory import (
+    calculate_inventory_summary,
+    format_inventory_summary,
+    select_best_model,
+)
 from visualization import create_forecast_plot
 
 
@@ -50,27 +54,43 @@ def save_results(
 
 
 
+def print_inventory_summary(inventory_summary: pd.DataFrame) -> None:
+    """Print a clean inventory summary in the terminal."""
+    best_model = inventory_summary.loc[0, "Best Model"]
+
+    print("\nInventory Summary")
+    print("-" * 63)
+    print(f"Best forecast model (lowest MAPE): {best_model}")
+    print(format_inventory_summary(inventory_summary))
+
+
+
 def main() -> None:
-    """Run the Version 2 forecasting and inventory workflow."""
+    """Run the Version 3 forecasting and inventory workflow."""
     try:
         ensure_output_folder_exists()
         demand_data = load_demand_data(DATA_FILE)
         forecast_data = add_forecasts(demand_data)
         metrics = calculate_all_metrics(forecast_data)
-        inventory_summary = calculate_inventory_summary(demand_data)
+
+        # Choose the best model using the lowest MAPE score.
+        best_model = select_best_model(metrics)
+
+        # Use the best model's latest forecast to drive inventory calculations.
+        inventory_summary = calculate_inventory_summary(demand_data, forecast_data, best_model)
+
         save_results(forecast_data, metrics, inventory_summary)
         create_forecast_plot(forecast_data, PLOT_FILE)
 
-        print("\nForecasting and Inventory Decision Support System - Version 2")
+        print("\nForecasting and Inventory Decision Support System - Version 3")
         print("=" * 63)
         print(f"Loaded data from: {DATA_FILE}")
         print(f"Number of periods: {len(demand_data)}")
+        print(f"Best model selected using MAPE: {best_model}")
         print("\nModel Comparison Summary")
         print("-" * 63)
         print(format_summary_table(metrics))
-        print("\nInventory Summary")
-        print("-" * 63)
-        print(format_inventory_summary(inventory_summary))
+        print_inventory_summary(inventory_summary)
         print("\nFiles saved successfully:")
         print(f"- {FORECAST_RESULTS_FILE}")
         print(f"- {MODEL_COMPARISON_FILE}")

@@ -1,2 +1,2 @@
-Average Demand,Demand Standard Deviation,Lead Time,Service Level,Z-Score,Lead Time Demand,Safety Stock,Reorder Point
-136.8667,10.8224,2,0.9500,1.6500,273.7333,25.2535,298.9868
+Best Model,Expected Demand per Period,Demand Standard Deviation,Lead Time,Service Level,Z-Score,Lead Time Demand,Safety Stock,Reorder Point,Periods per Year,Annual Demand,Ordering Cost per Order,Holding Cost per Unit per Year,EOQ
+Naive Forecast,151.0000,10.8224,2,0.9500,1.6500,302.0000,25.2535,327.2535,12,1812.0000,50,8,150.4992
